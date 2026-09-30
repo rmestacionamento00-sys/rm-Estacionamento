@@ -12,7 +12,7 @@
       ]
     },
     {
-      "source": "/(img|video)/(.*)",
+      "source": "/(.*)\\.(webp|png|jpg|mp4|ico)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
     }
   ]
