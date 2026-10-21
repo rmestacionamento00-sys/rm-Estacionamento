@@ -375,12 +375,14 @@ p{margin:0}
 /* =========================================================
    CONFIGURAÇÃO — edite apenas estes valores
    ========================================================= */
+  <script>
 window.SITE_CONFIG = {
-  VIDEO_SRC: "tour-rm-estacionamento.mp4", // sem som, em loop; vazio = mostra só a imagem de capa
-   VIDEO_SRC_DRONE: "drone-rm-estacionamento.mp4", 
-  GA4_MEASUREMENT_ID: "",   // Ex.: "G-XXXXXXXXXX" — vazio = nenhum script do Google é carregado
-  GTM_CONTAINER_ID: ""      // Ex.: "GTM-XXXXXXX" — opcional; use GA4 OU GTM (se usar GTM, configure o GA4 dentro dele)
+  VIDEO_SRC: "tour-rm-estacionamento.mp4",  // sem som, em loop; vazio = mostra só a imagem de capa
+  VIDEO_SRC_DRONE: "drone-rm-estacionamento.mp4",
+  GA4_MEASUREMENT_ID: "",  // Ex.: "G-XXXXXXXXXX" — vazio = nenhum script do Google é carregado
+  GTM_CONTAINER_ID: ""  // Ex.: "GTM-XXXXXXX" — opcional; use GA4 OU GTM (se usar GTM, configure o GA4 dentro dele)
 };
+</script>
 </script>
 </head>
 <body class="no-js">
@@ -758,7 +760,7 @@ window.SITE_CONFIG = {
     d.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("is-visible"); });
   }
 
-  /* ---------- Vídeo: sem som, em loop, toca sozinho quando visível ---------- */
+/* ---------- Vídeos: sem som, em loop, tocam quando visíveis ---------- */
 (function(){
   var d = document;
   var CFG = window.SITE_CONFIG || {};
@@ -806,6 +808,7 @@ window.SITE_CONFIG = {
     } else if (!userPaused) { playVideo(); }
   });
 })();
+
   // Com "reduzir movimento" ativo no sistema, o vídeo não inicia sozinho; o botão permite tocar.
   if (reduceMotion) { video.removeAttribute("autoplay"); userPaused = true; setToggle(true); }
   video.addEventListener("play", function(){ setToggle(false); });
