@@ -291,43 +291,30 @@ p{margin:0}
 @media (max-width:479px){.gallery{grid-template-columns:minmax(0,1fr);gap:18px}}
 
 /* Vídeo */
-<section class="section video-section" id="video" aria-labelledby="video-title">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="kicker">Tour em vídeo</span>
-      <h2 id="video-title">Veja o estacionamento por dentro</h2>
-      <p>Um tour rápido pela entrada, guarita e vagas — e a visão aérea do espaço.</p>
-    </div>
-
-    <div class="video-players">
-      <div class="player reveal" data-player>
-        <video class="player-video" muted loop playsinline autoplay preload="none"
-               poster="video-poster.webp" width="576" height="1024"
-               aria-label="Tour em vídeo pelo R&amp;M Estacionamento: entrada, guarita e vagas"
-               disablepictureinpicture></video>
-        <div class="player-shade"></div>
-        <span class="player-label" aria-hidden="true">Entrada, guarita e vagas</span>
-        <button class="video-toggle" type="button" aria-pressed="false" aria-label="Pausar vídeo">
-          <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
-          <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-
-      <div class="player reveal" data-player>
-        <video class="player-video" muted loop playsinline autoplay preload="none"
-               poster="video-poster-drone.webp" width="576" height="1024"
-               aria-label="Visão aérea do R&amp;M Estacionamento gravada por drone"
-               disablepictureinpicture></video>
-        <div class="player-shade"></div>
-        <span class="player-label" aria-hidden="true">Visão aérea do estacionamento</span>
-        <button class="video-toggle" type="button" aria-pressed="false" aria-label="Pausar vídeo">
-          <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
-          <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
+.video-section{background:var(--blue-50)}
+.video-players{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(16px,2.5vw,28px);
+  justify-items:center;
+  align-items:start;
+}
+@media (max-width:640px){
+  .video-players{grid-template-columns:minmax(0,1fr)}
+}
+.player{
+  position:relative;
+  width:100%;
+  max-width:320px;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  background:var(--ink);
+  aspect-ratio:9/16;
+}
+.player .player-video,
+.player .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.player .player-video{object-fit:contain;background:var(--ink)}
 
 /* Localização */
 .location-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:stretch}
@@ -390,6 +377,7 @@ p{margin:0}
    ========================================================= */
 window.SITE_CONFIG = {
   VIDEO_SRC: "tour-rm-estacionamento.mp4", // sem som, em loop; vazio = mostra só a imagem de capa
+   VIDEO_SRC_DRONE: "drone-rm-estacionamento.mp4", 
   GA4_MEASUREMENT_ID: "",   // Ex.: "G-XXXXXXXXXX" — vazio = nenhum script do Google é carregado
   GTM_CONTAINER_ID: ""      // Ex.: "GTM-XXXXXXX" — opcional; use GA4 OU GTM (se usar GTM, configure o GA4 dentro dele)
 };
@@ -576,28 +564,39 @@ window.SITE_CONFIG = {
 
 <!-- ============ VÍDEO ============ -->
 <section class="section video-section" id="video" aria-labelledby="video-title">
-  <div class="container video-grid">
-    <div class="reveal">
-      <div class="section-head">
-        <span class="kicker">Tour em vídeo</span>
-        <h2 id="video-title">Veja o estacionamento por dentro</h2>
-        <p>Um tour rápido pela entrada, guarita e vagas.</p>
-      </div>
-      <ul class="video-points">
-        <li><svg aria-hidden="true"><use href="#i-check"/></svg>O caminho da Av. Atlântica até a guarita</li>
-        <li><svg aria-hidden="true"><use href="#i-check"/></svg>O atendimento e a área monitorada</li>
-        <li><svg aria-hidden="true"><use href="#i-check"/></svg>As vagas, incluindo as de acessibilidade</li>
-      </ul>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Tour em vídeo</span>
+      <h2 id="video-title">Veja o estacionamento por dentro</h2>
+      <p>Um tour rápido pela entrada, guarita e vagas — e a visão aérea do espaço.</p>
     </div>
-    <div class="player reveal" id="player">
-      <video id="tour-video" muted loop playsinline autoplay preload="none" poster="video-poster.webp" width="576" height="1024" aria-label="Tour em vídeo pelo R&amp;M Estacionamento: entrada, guarita e vagas" disablepictureinpicture>
-      </video>
-      <div class="player-shade"></div>
-      <span class="player-label" aria-hidden="true">Tour pelo R&amp;M Estacionamento</span>
-      <button class="video-toggle" type="button" id="video-toggle" aria-pressed="false" aria-label="Pausar vídeo">
-        <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
-        <svg class="i-play" aria-hidden="true"><use href="#i-play"/></svg>
-      </button>
+
+    <div class="video-players">
+      <div class="player reveal" data-player>
+        <video class="player-video" muted loop playsinline autoplay preload="none"
+               poster="video-poster.webp" width="576" height="1024"
+               aria-label="Tour em vídeo pelo R&amp;M Estacionamento: entrada, guarita e vagas"
+               disablepictureinpicture></video>
+        <div class="player-shade"></div>
+        <span class="player-label" aria-hidden="true">Entrada, guarita e vagas</span>
+        <button class="video-toggle" type="button" aria-pressed="false" aria-label="Pausar vídeo">
+          <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+          <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="player reveal" data-player>
+        <video class="player-video" muted loop playsinline autoplay preload="none"
+               poster="video-poster-drone.webp" width="576" height="1024"
+               aria-label="Visão aérea do R&amp;M Estacionamento gravada por drone"
+               disablepictureinpicture></video>
+        <div class="player-shade"></div>
+        <span class="player-label" aria-hidden="true">Visão aérea do estacionamento</span>
+        <button class="video-toggle" type="button" aria-pressed="false" aria-label="Pausar vídeo">
+          <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+          <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -760,22 +759,53 @@ window.SITE_CONFIG = {
   }
 
   /* ---------- Vídeo: sem som, em loop, toca sozinho quando visível ---------- */
-  var video = d.getElementById("tour-video"), vToggle = d.getElementById("video-toggle"),
-      src = (CFG.VIDEO_SRC || "").trim(), userPaused = false,
-      reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  video.muted = true;
-  function setToggle(paused){
-    vToggle.setAttribute("aria-pressed", String(paused));
-    vToggle.setAttribute("aria-label", paused ? "Reproduzir vídeo" : "Pausar vídeo");
-  }
-  function loadVideo(){ if (src && !video.getAttribute("src")) video.src = src; }
-  function playVideo(){
-    if (!src) return;
-    loadVideo();
-    var p = video.play();
-    if (p && p.catch) p.catch(function(){ setToggle(true); });
-  }
-  if (!src) { vToggle.hidden = true; video.removeAttribute("autoplay"); }
+(function(){
+  var d = document;
+  var CFG = window.SITE_CONFIG || {};
+  var sources = [CFG.VIDEO_SRC, CFG.VIDEO_SRC_DRONE];
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  Array.prototype.forEach.call(d.querySelectorAll("[data-player]"), function(player, i){
+    var video = player.querySelector(".player-video");
+    var toggle = player.querySelector(".video-toggle");
+    var src = (sources[i] || "").trim();
+    var userPaused = false;
+
+    video.muted = true;
+
+    function setToggle(paused){
+      toggle.setAttribute("aria-pressed", String(paused));
+      toggle.setAttribute("aria-label", paused ? "Reproduzir vídeo" : "Pausar vídeo");
+    }
+    function loadVideo(){ if (src && !video.getAttribute("src")) video.src = src; }
+    function playVideo(){
+      if (!src) return;
+      loadVideo();
+      var p = video.play();
+      if (p && p.catch) p.catch(function(){ setToggle(true); });
+    }
+
+    if (!src) { toggle.hidden = true; video.removeAttribute("autoplay"); }
+    if (reduceMotion) { video.removeAttribute("autoplay"); userPaused = true; setToggle(true); }
+
+    video.addEventListener("play", function(){ setToggle(false); });
+    video.addEventListener("pause", function(){ setToggle(true); });
+
+    toggle.addEventListener("click", function(){
+      if (video.paused) { userPaused = false; playVideo(); }
+      else { userPaused = true; video.pause(); }
+    });
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (en.isIntersecting) { if (!userPaused) playVideo(); }
+          else if (!video.paused) { video.pause(); setToggle(true); }
+        });
+      }, { threshold: 0.25 }).observe(video);
+    } else if (!userPaused) { playVideo(); }
+  });
+})();
   // Com "reduzir movimento" ativo no sistema, o vídeo não inicia sozinho; o botão permite tocar.
   if (reduceMotion) { video.removeAttribute("autoplay"); userPaused = true; setToggle(true); }
   video.addEventListener("play", function(){ setToggle(false); });
